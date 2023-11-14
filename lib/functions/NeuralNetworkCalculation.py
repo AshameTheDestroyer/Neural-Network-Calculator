@@ -1,5 +1,7 @@
+from typing import Callable
 from lib.classes.Matrix import *
 from lib.classes.ActivationFunction import *
+from lib.classes.LayerCalculationStage import *
 from lib.functions.MatrixOperations.MatrixOperations import *
 
 def NeuralNetworkCalculation(
@@ -8,34 +10,25 @@ def NeuralNetworkCalculation(
     biases: list[Matrix],
     activationFunction: ActivationFunction = None,
     multiclassActivationFunction: MulticlassActivationFunction = None,
-    printEachLayer: bool = False,
+    foreachLayer: Callable[[Matrix, LayerCalculationStage], None] = lambda layer, stage: None,
 ) -> Matrix:
     layer = [x for x in xs]
 
     for weight in weights:
         i = weights.index(weight)
+        foreachLayer(layer, LayerCalculationStage.onInput)
 
         layer = MatrixMultiplication(weights[i], layer)
-        if printEachLayer:
-            print(f"Multiplication [{i}]:")
-            MatrixPrinting(layer)
-            print("")
+        foreachLayer(layer, LayerCalculationStage.onMultiplication)
 
         layer = MatrixAddition(layer, biases[i])
-        if printEachLayer:
-            print(f"Addition [{i}]:")
-            MatrixPrinting(layer)
-            print("")
+        foreachLayer(layer, LayerCalculationStage.onAddition)
 
         layer = MatrixActivation(
             matrix=layer,
             activationFunction=activationFunction,
             multiclassActivationFunction=multiclassActivationFunction,
         )
-        
-        if printEachLayer:
-            print(f"Activation [{i}]:")
-            MatrixPrinting(layer)
-            print("")
+        foreachLayer(layer, LayerCalculationStage.onActivation)
 
     return layer
