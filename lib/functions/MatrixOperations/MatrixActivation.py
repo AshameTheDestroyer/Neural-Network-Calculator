@@ -13,6 +13,6 @@ def MatrixActivation(
     elif layeredActivationFunction is not None:
         print(matrix)
         print(MatrixTranspose(matrix))
-        return MatrixTranspose([convolutionalActivationFunction(i) for i in MatrixTranspose(matrix)])
+        return MatrixTranspose([layeredActivationFunction(i) for i in MatrixTranspose(matrix)])
     else:
         raise ValueError("No activation function was provided.")
