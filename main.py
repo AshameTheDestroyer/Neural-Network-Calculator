@@ -1,5 +1,6 @@
 from lib.functions.NeuralNetworkCalculation import *
-from lib.functions.Sigmoid import *
+from lib.functions.ActivationFunctions import *
+from lib.classes.ActivationFunction import *
 from lib.classes.MatrixElement import *
 from lib.classes.Matrix import *
 from math import pi
@@ -26,10 +27,10 @@ weights: list[Matrix] = [
 ]
 
 xs: Matrix = [
-    [7.24],
-    [8.43],
-    [-16.67],
-    [-12.44],
+    [10 * pi],
+    [-17.63],
+    [2 * phi ** 0.5],
+    [-34.17],
 ]
 
 biases: list[Matrix] = [[[0] for j in i] for i in weights]
@@ -42,6 +43,7 @@ output = NeuralNetworkCalculation(
     weights=weights,
     xs=xs,
     biases=biases,
-    activationFunction=Sigmoid,
+    # activationFunction=ActivationFunctions.Sign,
+    convolutionalActivationFunction=ActivationFunctions.Softmax,
     printEachLayer=True,
 )

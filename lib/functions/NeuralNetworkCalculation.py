@@ -1,12 +1,14 @@
-from lib.functions.MatrixOperations.MatrixOperations import *
 from lib.classes.Matrix import *
+from lib.classes.ActivationFunction import *
+from lib.functions.MatrixOperations.MatrixOperations import *
 
 def NeuralNetworkCalculation(
     weights: list[Matrix],
     xs: Matrix,
     biases: list[Matrix],
-    activationFunction: Callable[[MatrixElement], MatrixElement],
-    printEachLayer: bool = False
+    activationFunction: ActivationFunction = None,
+    convolutionalActivationFunction: ConvolutionalActivationFunction = None,
+    printEachLayer: bool = False,
 ) -> Matrix:
     layer = [x for x in xs]
 
@@ -25,11 +27,15 @@ def NeuralNetworkCalculation(
             MatrixPrinting(layer)
             print("")
 
-        layer = MatrixActivation(layer, activationFunction)
+        layer = MatrixActivation(
+            matrix=layer,
+            activationFunction=activationFunction,
+            convolutionalActivationFunction=convolutionalActivationFunction,
+        )
+        
         if printEachLayer:
             print(f"Activation [{i}]:")
             MatrixPrinting(layer)
             print("")
-
 
     return layer
