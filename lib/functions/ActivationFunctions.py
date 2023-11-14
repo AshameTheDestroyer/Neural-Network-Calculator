@@ -19,5 +19,4 @@ class ActivationFunctions(Enum):
 
     def Softmax(xs: list[MatrixElement]) -> list[MatrixElement]:
         summation = sum([e ** x for x in xs])
-        print(f"summation of {xs} is {summation}")
-        return [e ** xi / sum([e ** xj for xj in xs]) for xi in xs]
+        return [e ** xi / summation for xi in xs]

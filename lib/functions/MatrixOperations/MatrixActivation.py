@@ -11,8 +11,6 @@ def MatrixActivation(
     if activationFunction is not None:
         return [[activationFunction(j) for j in i] for i in matrix]
     elif convolutionalActivationFunction is not None:
-        print(matrix)
-        print(MatrixTranspose(matrix))
         return MatrixTranspose([convolutionalActivationFunction(i) for i in MatrixTranspose(matrix)])
     else:
         raise ValueError("No activation function was provided.")
