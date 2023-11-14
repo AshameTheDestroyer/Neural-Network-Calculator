@@ -44,6 +44,6 @@ output = NeuralNetworkCalculation(
     xs=xs,
     biases=biases,
     # activationFunction=ActivationFunctions.Sign,
-    layeredActivationFunction=ActivationFunctions.Softmax,
+    multiclassActivationFunction=ActivationFunctions.Softmax,
     printEachLayer=True,
 )
