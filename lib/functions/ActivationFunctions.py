@@ -1,6 +1,6 @@
 from enum import Enum
-from lib.classes.ActivationFunction import *
 from math import tanh, e
+from lib.classes.ActivationFunction import *
 
 class ActivationFunctions(Enum):
     Linear: ActivationFunction = lambda x: x

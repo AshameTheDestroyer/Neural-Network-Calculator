@@ -7,7 +7,7 @@ def NeuralNetworkCalculation(
     xs: Matrix,
     biases: list[Matrix],
     activationFunction: ActivationFunction = None,
-    convolutionalActivationFunction: ConvolutionalActivationFunction = None,
+    layeredActivationFunction: LayeredActivationFunction = None,
     printEachLayer: bool = False,
 ) -> Matrix:
     layer = [x for x in xs]
@@ -30,7 +30,7 @@ def NeuralNetworkCalculation(
         layer = MatrixActivation(
             matrix=layer,
             activationFunction=activationFunction,
-            convolutionalActivationFunction=convolutionalActivationFunction,
+            layeredActivationFunction=layeredActivationFunction,
         )
         
         if printEachLayer:
