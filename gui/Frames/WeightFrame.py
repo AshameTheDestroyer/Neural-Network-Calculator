@@ -1,6 +1,6 @@
 from tkinter import *
 
-from Frames.TitledFrame import *
+from gui.Frames.TitledFrame import *
 
 def WeightFrame(master: Misc) -> None:
     TitledFrame(

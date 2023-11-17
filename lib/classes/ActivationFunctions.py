@@ -17,6 +17,7 @@ class ActivationFunctions(Enum):
 
     PieceWiseLinear: ActivationFunction = lambda x: 0 if (x <= -0.5) else 1 if (x >= 0.5) else x + 0.5
 
+class MulticlassActivationFunctions(Enum):
     def Softmax(xs: list[MatrixElement]) -> list[MatrixElement]:
         summation = sum([e ** x for x in xs])
         return [e ** xi / summation for xi in xs]

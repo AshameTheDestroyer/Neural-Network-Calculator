@@ -173,6 +173,7 @@ class InputField(Frame):
                 padx=0,
                 pady=0,
                 command=buttons[i]["command"],
+                cursor="hand1",
             ).grid(sticky=NSEW)
     
     def _getIntegerValue(self) -> int:

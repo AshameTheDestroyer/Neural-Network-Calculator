@@ -1,7 +1,7 @@
 from tkinter import *
 
-from lib.InputField import *
-from Frames.TitledFrame import *
+from gui.lib.InputField import *
+from gui.Frames.TitledFrame import *
 
 def InputFrame(master: Misc) -> None:
     subFrame = TitledFrame(

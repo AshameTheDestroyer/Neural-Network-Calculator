@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter.font import *
 
-from FrameArray import *
+from gui.FrameArray import *
 
 window = Tk()
 window.title("Neural Network Calculator")

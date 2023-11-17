@@ -19,3 +19,8 @@ And for some reason python libraries suck at doing this, so I'm building my own 
 ### Input Frame:
 1. Added the ability to control how many inputs to, well, input.
 2. Made a custom controllable and configurable input field.
+
+### Activation Function Frame:
+1. Now the activation function frame has been implemented mostly fully.
+2. Activation functions are separated by their input and output types.
+3. They can also be plotted using a plotter, for better understanding.
