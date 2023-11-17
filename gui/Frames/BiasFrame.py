@@ -1,9 +1,9 @@
 from tkinter import *
 
-from Frames.SubFrame import *
+from Frames.TitledFrame import *
 
 def BiasFrame(master: Misc) -> None:
-    SubFrame(
+    TitledFrame(
         master=master,
         title="Biases",
     )

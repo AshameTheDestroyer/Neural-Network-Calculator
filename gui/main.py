@@ -1,9 +1,14 @@
 from tkinter import *
+from tkinter.font import *
 
 from FrameArray import *
 
 window = Tk()
 window.title("Neural Network Calculator")
+
+defaultFont = nametofont("TkDefaultFont")
+defaultFont.configure(family="Cascadia Code")
+window.option_add("*Font", defaultFont)
 
 mainFramePadding = 20
 mainFrame = Frame(
@@ -28,6 +33,8 @@ for i in range(len(frameArray)):
             relief=SUNKEN,
         )
         frame.grid(column=j, row=i, sticky=NSEW)
+        frame.rowconfigure(index=2, weight=1)
+        frame.columnconfigure(index=1, weight=1)
 
         frameArray[i][j](frame)
 

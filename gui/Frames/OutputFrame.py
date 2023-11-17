@@ -1,9 +1,9 @@
 from tkinter import *
 
-from Frames.SubFrame import *
+from Frames.TitledFrame import *
 
-def OutputFrame(master: Misc):
-    SubFrame(
+def OutputFrame(master: Misc) -> None:
+    TitledFrame(
         master=master,
         title="Output",
     )

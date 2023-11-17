@@ -1,9 +1,9 @@
 from tkinter import *
 
-from Frames.SubFrame import *
+from Frames.TitledFrame import *
 
-def WeightFrame(master: Misc):
-    SubFrame(
+def WeightFrame(master: Misc) -> None:
+    TitledFrame(
         master=master,
         title="Weights",
     )

@@ -1,9 +1,9 @@
 from tkinter import *
 
-from Frames.SubFrame import *
+from Frames.TitledFrame import *
 
-def ActivationFunctionFrame(master: Misc):
-    SubFrame(
+def ActivationFunctionFrame(master: Misc) -> None:
+    TitledFrame(
         master=master,
         title="Activation Function",
     )
