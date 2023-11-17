@@ -11,3 +11,7 @@ However, Python is still a horrible language to use.
 2. I've added the ability to use multiclass activation functions, such as the built-in Softmax.
 3. Refined some of the project and fixed bugs.
 4. Added the ability to control what happens to each layer at any given calculation stage.
+
+### GUI Introduced:
+Now we're talking, I'm upgrading the system to use GUIs.
+And for some reason python libraries suck at doing this, so I'm building my own shell around them.
