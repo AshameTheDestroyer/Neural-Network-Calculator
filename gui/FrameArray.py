@@ -7,6 +7,6 @@ from gui.Frames.BiasFrame import *
 from gui.Frames.ActivationFunctionFrame import *
 
 frameArray = [
-    [InputFrame, WeightFrame],
-    [BiasFrame, ActivationFunctionFrame],
+    [InputFrame, WeightFrame, { "function": OutputFrame}],
+    [BiasFrame, { "function": ActivationFunctionFrame, "columnspan": 2 }],
 ]

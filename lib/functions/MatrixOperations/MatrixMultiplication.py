@@ -5,7 +5,6 @@ def MatrixMultiplication(
     matrix1: Matrix,
     matrix2: Matrix,
 ) -> Matrix:
-    
     width1, height1 = len(matrix1), len(matrix1[0])
     width2, height2 = len(matrix2), len(matrix2[0])
 

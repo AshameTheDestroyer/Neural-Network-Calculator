@@ -6,6 +6,8 @@ import matplotlib.pyplot as plotter
 from gui.Frames.TitledFrame import *
 from lib.classes.ActivationFunctions import *
 
+from main import neuralNetwork
+
 def ActivationFunctionFrame(master: Misc) -> None:
     subFrame = TitledFrame(
         master=master,
@@ -22,8 +24,18 @@ def ActivationFunctionFrame(master: Misc) -> None:
         if activationFunction[0] != "_"
     ]
 
+    def onComboboxChange(value: str) -> None:
+        try:
+            neuralNetwork.activationFunction = \
+                ActivationFunctions.__getattribute__(ActivationFunctions, value)
+            neuralNetwork.multiclassActivationFunction = None
+        except:
+            neuralNetwork.activationFunction = None
+            neuralNetwork.multiclassActivationFunction = \
+                MulticlassActivationFunctions.__getattribute__(MulticlassActivationFunctions, value)
+
     comboboxTextVariable = StringVar(value=activationFunctions[0])
-    comboboxTextVariable.trace_add("write", lambda var, index, mode: comboboxTextVariable.get())
+    comboboxTextVariable.trace_add("write", lambda var, index, mode: mode == "write" and onComboboxChange(comboboxTextVariable.get()))
     
     combobox = Combobox(
         master=subFrame,
@@ -67,13 +79,14 @@ def ActivationFunctionFrame(master: Misc) -> None:
         radioButton.grid(column=i + 1, row=1)
         if i == 0: radioButton.select()
 
+    limit, modifier = 1000, 100
+
     def graphActivationFunction() -> None:
         (activationFunctionName, activationFunction) = list(filter(
                 lambda item: item[0] == comboboxTextVariable.get(),
                 vars(ActivationFunctions).items()
         ))[0]
 
-        limit, modifier = 1000, 100
         xs = [x / modifier for x in range(-limit, limit + 1)]
         ys = [activationFunction(x / modifier) for x in range(-limit, limit + 1)]
 
@@ -81,13 +94,32 @@ def ActivationFunctionFrame(master: Misc) -> None:
         plotter.plot(xs, ys)
         plotter.ylim(-limit / modifier, (limit + 1) / modifier)
         plotter.grid(True)
-        plotter.show()
+        plotter.show(block=True)
+
+    def clearGraph() -> None:
+        plotter.title("None")
+        plotter.clf()
+        plotter.ylim(-limit / modifier, (limit + 1) / modifier)
+        plotter.grid(True)
+        plotter.show(block=True)
+
+    buttonFrame = Frame(
+        master=subFrame,
+    )
+    buttonFrame.grid(column=1, row=3, sticky=NSEW)
 
     graphButton = Button(
-        master=subFrame,
+        master=buttonFrame,
         text="Graph Activation Function",
         cursor="hand1",
         command=graphActivationFunction,
     )
-    graphButton.grid(column=1, row=3, sticky=NSEW)
+    graphButton.grid(column=1, row=1, sticky=NSEW)
 
+    clearButton = Button(
+        master=buttonFrame,
+        text="Clear Graph",
+        cursor="hand1",
+        command=clearGraph,
+    )
+    clearButton.grid(column=2, row=1, sticky=NSEW)

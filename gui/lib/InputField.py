@@ -12,6 +12,15 @@ class InputFieldType(Enum):
     Integer = "integer"
     Float = "float"
 
+class InputFieldState(Enum):
+    Normal = "normal"
+    Readonly = "readonly"
+    Disabled = "disabled"
+
+class InputFieldDisplay(Enum):
+    Horizontal = "horizontal"
+    Vertical = "vertical"
+
 TextVariableOnChange = Callable[[TextChangeMode, str], None]
 
 class InputField(Frame):
@@ -36,19 +45,21 @@ class InputField(Frame):
         type: InputFieldType = InputFieldType.String,
         minimum: float = -inf,
         maximum: float = +inf,
+        state: InputFieldState = InputFieldState.Normal,
+        display: InputFieldDisplay = InputFieldDisplay.Horizontal,
     ) -> None:
         super().__init__(
             master=master,
         )
 
         self._setUpRange(minimum, maximum)
-        self._setUpLabel(title)
+        self._setUpLabel(title, display)
         self._setUpTextVariable(text, onChange)
         self._setUpType(type, text)
-        self._setUpEntry()
+        self._setUpEntry(state, display)
 
-        if type != InputFieldType.String:
-            self._setUpButtons()
+        if type != InputFieldType.String and state == InputFieldState.Normal:
+            self._setUpButtons(display)
 
     def _setUpRange(self, minimum: float, maximum: float) -> None:
         if minimum > maximum:
@@ -71,13 +82,18 @@ class InputField(Frame):
         self._previousTextValue = text
         self.textVariable.set(text)
 
-    def _setUpLabel(self, title: str) -> None:
+    def _setUpLabel(self, title: str, display: InputFieldDisplay) -> None:
         self.label = Label(
             master=self,
             text=title,
+            justify=CENTER,
         )
-
-        self.label.grid(column=1, row=1)
+        
+        match display:
+            case InputFieldDisplay.Horizontal:
+                self.label.grid(column=1, row=1)
+            case InputFieldDisplay.Vertical:
+                self.label.grid(column=1, row=2)
 
     def _setUpTextVariable(self, text: str, onChange: TextVariableOnChange = None) -> None:
         self.textVariable = StringVar(master=self, value=text)
@@ -95,7 +111,7 @@ class InputField(Frame):
         self.textVariable.trace_add(mode="write", callback=onWrite)
         self.textVariable.trace_add(mode="read", callback=onRead)
 
-    def _setUpEntry(self) -> None:
+    def _setUpEntry(self, state: InputFieldState, display: InputFieldDisplay) -> None:
         width: int = None
 
         if self.type != InputFieldType.String:
@@ -105,14 +121,26 @@ class InputField(Frame):
                     len(str(minimum if minimum != -inf else 0)),
                     len(str(maximum if maximum != -inf else 0)),
                 )
+            if self.type == InputFieldType.Float:
+                width += 1
 
         self.entry = Entry(
             master=self,
             textvariable=self.textVariable,
             justify="center",
             width=width + InputField._entryPadding,
+            state=state.value,
+            disabledforeground="black",
         )
-        self.entry.grid(column=2, row=1, padx=(InputField._gap, 0), ipady=InputField._entryPadding * 5 / 2)
+
+        padx = (InputField._gap, 0)
+        ipady=InputField._entryPadding * 5 / 2
+
+        match display:
+            case InputFieldDisplay.Horizontal:
+                self.entry.grid(column=2, row=1, padx=padx, ipady=ipady)
+            case InputFieldDisplay.Vertical:
+                self.entry.grid(column=1, row=1, padx=padx, ipady=ipady)
     
     def _validateInteger(self, text: str) -> bool:
         try:
@@ -133,12 +161,16 @@ class InputField(Frame):
             self.minimum if (self.minimum > number) else \
             self.maximum if (self.maximum < number) else number
     
-    def _setUpButtons(self) -> None:
+    def _setUpButtons(self, display: InputFieldDisplay) -> None:
         buttonFrame = Frame(
             master=self,
         )
-        buttonFrame.grid(column=3, row=1)
-
+        match display:
+            case InputFieldDisplay.Horizontal:
+                buttonFrame.grid(column=3, row=1)
+            case InputFieldDisplay.Vertical:
+                buttonFrame.grid(column=2, row=1)
+                                
         def incrementButton(amount: int | float) -> None:
             value = str(self._getValue() + amount)
             self.textVariable.set(value)
@@ -210,6 +242,6 @@ class InputField(Frame):
                     self.textVariable.set(self._previousTextValue)
                     return
                 
-                text = str(self._clamp(int(text)))
+                text = str(self._clamp(float(text)))
                 self._previousTextValue = text
                 self.textVariable.set(text)
