@@ -31,3 +31,7 @@ And for some reason python libraries suck at doing this, so I'm building my own 
 1. Layers can be set up with a matrix of input fields, making all the weights of the neural network.
 2. Weights can be adjusted from their heights to their weights, with adjusting all adjacent weights, inclusive to the matrices of input and output.
 3. And finally, a calculation button to calculate the overall output of the neural network.
+
+### Bias Frame & Dynamic Layers:
+1. Instead of going through the hassle of reprogramming the weight frame in the name of bias frame, I just made a uni-bias input field, applying for the biases.
+2. Now you're able to adjust the layer count dynamically.

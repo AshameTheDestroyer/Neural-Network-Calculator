@@ -34,6 +34,7 @@ def InputFrame(master: Misc) -> None:
                     minimum=-100,
                     maximum=100,
                     onChange=onInputFieldChange,
+                    text=str(neuralNetwork.inputs[0][i]),
                 )
                 xInputField.grid(column=1, row=i + 3)
                 xInputFields.append(xInputField)
@@ -46,7 +47,7 @@ def InputFrame(master: Misc) -> None:
         master=subFrame,
         title="Count",
         type=InputFieldType.Integer,
-        minimum=3,
+        minimum=1,
         maximum=9,
         text=str(len(MatrixTranspose(neuralNetwork.inputs))),
         onChange=onCountInputFieldChange,

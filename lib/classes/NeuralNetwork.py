@@ -11,27 +11,38 @@ class NeuralNetwork():
     weights: list[Matrix]
     outputs: Matrix
     dimensions: list[(int, int)]
+    uniBias: MatrixElement
     
     activationFunction: ActivationFunction
     multiclassActivationFunction: MulticlassActivationFunction
 
+    onDimensionPopped: Event
     onDimensionAltered: Event
+    onDimensionAppended: Event
     onNetworkCalculated: Event
 
-    def __init__(self) -> None:
+    def __init__(self, setDefaultDimensions: bool = True) -> None:
         self.inputs = []
         self.biases = []
         self.weights = []
         self.outputs = []
         self.dimensions = []
+        self.uniBias = 0
 
         self.activationFunction = ActivationFunctions.Linear
         self.multiclassActivationFunction = None
 
+        self.onDimensionPopped = Event()
         self.onDimensionAltered = Event()
+        self.onDimensionAppended = Event()
         self.onNetworkCalculated = Event()
+        
+        if setDefaultDimensions: self.addDimensions(1, 1, 1)
 
     def addDimensions(self, *lengths: list[int]) -> None:
+        if len(lengths) < 3:
+            raise ValueError("At least 3 dimensions should be provided, in order to have one input, one output, and one weight layers.")
+
         for i in range(len(lengths)):
             dimension = self._addDimension(lengths[i], isLastLayer=(i == len(lengths) - 1))
             matrix = NeuralNetwork._buildMatrix(dimension)
@@ -66,17 +77,21 @@ class NeuralNetwork():
         self.dimensions.append((length, 1))
         self._alterMatrix(self.outputs, self.dimensions[-1])
 
+        self.onDimensionAppended.Fire(self.weights[-1], self.outputs)
+
     def popDimension(self) -> None:
         self.dimensions.pop()
         self.weights.pop()
         self.dimensions[-1] = (self.dimensions[-1][0], 1)
         self._alterMatrix(self.outputs, self.dimensions[-1])
 
+        self.onDimensionPopped.Fire()
+
     def calculate(self) -> None:
         self.outputs = NeuralNetworkCalculation(
             xs=MatrixTranspose([i for i in self.inputs]),
             weights=[MatrixTranspose(i) for i in self.weights],
-            biases=[[[0] for k in j] for j in [MatrixTranspose(i) for i in self.weights]],
+            biases=[[[self.uniBias] for k in j] for j in [MatrixTranspose(i) for i in self.weights]],
             activationFunction=self.activationFunction,
             multiclassActivationFunction=self.multiclassActivationFunction,
         )

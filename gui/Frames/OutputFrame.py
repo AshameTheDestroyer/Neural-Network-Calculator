@@ -63,3 +63,6 @@ def OutputFrame(master: Misc) -> None:
                 yInputField.grid_remove()
     
     setYInputFieldCount(count=len(neuralNetwork.outputs))
+
+    neuralNetwork.onDimensionPopped.Subscribe(
+        lambda: setYInputFieldCount(count=neuralNetwork.dimensions[-1][0]))
